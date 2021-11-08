@@ -96,7 +96,54 @@ uint64_t get_L3_cache_set_index(ADDR_PTR virt_addr) {
 // {
 //     return (virt_addr & HUGEPAGE_MASK) >> LOG_CACHE_LINESIZE;
 // }
-
+//返回slice号
+int r0[]={6,10,12,14,16,17,18,20,22,24,25,26,27,28,30,32,33,35,36};
+int r1[]={7,11,13,15,17,19,20,21,22,23,24,26,28,29,31,33,34,35,37};
+int r2[]={8,12,13,16,19,22,23,26,27,30,31,34,35,36,37};
+int slicenum(ADDR_PTR addr)
+{
+    int sliceid=0;
+    int i=0;
+    ADDR_PTR c[64];
+    //printf("addr的0-37位：\n");
+    for(i=0;i<38;i++)
+    {
+        c[i]=addr>>i;
+        //printf(" %ld ",c[i]);
+        c[i]=c[i]%2;
+       // printf("%ld",c[i]);
+        if((i+1)%4==0)
+        {
+         //   printf(" ");
+        }
+    }
+   // printf("\n");
+    ADDR_PTR o0=c[r0[0]],o1=c[r1[0]],o2=c[r2[0]];
+   // printf("xor_%d=%ld ",r0[0],o0);
+    for(i=1;i<sizeof(r0)/sizeof(r0[1]);i++)
+    {
+        o0=o0^c[r0[i]];
+    //    printf("xor_%d=%ld ",r0[i],o0);
+    } 
+    //printf("\n");
+    //printf("xor_%d=%ld ",r1[0],o1);
+    for(i=1;i<sizeof(r1)/sizeof(r1[1]);i++)
+    {
+        o1=o1^c[r1[i]];
+    //    printf("xor_%d=%ld ",r1[i],o1);
+    }
+   // printf("\n");
+   // printf("xor_%d=%ld ",r2[0],o2);
+    for(i=1;i<sizeof(r2)/sizeof(r2[1]);i++)
+    {
+        o2=o2^c[r2[i]];
+    //    printf("xor_%d=%ld ",r2[i],o2);
+    }     
+    //   printf("\n");   
+    //printf("slice号为：%ld %ld %ld ",o2,o1,o0);
+    sliceid=o2*4+o1*2+o0*1;
+    return sliceid;
+}
 
 /*
  * Allocate a buffer of the size as passed-in

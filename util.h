@@ -91,6 +91,7 @@ char *conv_msg(char *data, int size, char *msg);
 
 uint64_t get_cache_slice_set_index(ADDR_PTR virt_addr);
 uint64_t get_L3_cache_set_index(ADDR_PTR virt_addr);
+int slicenum(ADDR_PTR addr);
 // uint64_t get_hugepage_cache_set_index(ADDR_PTR virt_addr);
 void *allocate_buffer(uint64_t size);
 
