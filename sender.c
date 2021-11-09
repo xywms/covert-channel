@@ -35,6 +35,10 @@ void init_config(struct config *config, int argc, char **argv) {
                 if (get_cache_slice_set_index(addr) == config->cache_region) {
                 // if (get_L3_cache_set_index(addr) == config->cache_region) {
                     append_string_to_linked_list(&config->addr_set, addr);
+                    int sliceid=slicenum(addr);
+                    printf("0x%lx加入list,",addr);
+                    printf("其sliceid=%d",sliceid);
+                    printf("\n");
                     addr_set_size++;
                 }
             }
