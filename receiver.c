@@ -26,11 +26,12 @@ void init_config(struct config *config, int argc, char **argv) {
         // Construct the addr_set by taking the addresses that have cache set index 0
         // There will be at least one of such addresses in our buffer.
         uint32_t addr_set_size = 0;
-        for (int i = 0; i < 512 * CACHE_WAYS_L1 * CACHE_SETS_L1; i++) {
+        for (int i = 0; i < 512 * CACHE_WAYS_L3 * CACHE_SETS_L3; i++) {
             ADDR_PTR addr = (ADDR_PTR) (config->buffer + CACHE_LINESIZE * i);
             // both of following function should work...L3 is a more restrict set
             if (get_cache_slice_set_index(addr) == config->cache_region) {
             // if (get_L3_cache_set_index(addr) == config->cache_region) {
+            //if (get_L3_cache_set_index(addr) == config->cache_region&&slicenum(addr)==0) {
                 append_string_to_linked_list(&config->addr_set, addr);
                 addr_set_size++;
             }

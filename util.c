@@ -85,7 +85,8 @@ uint64_t get_cache_slice_set_index(ADDR_PTR virt_addr) {
 }
 
 uint64_t get_L3_cache_set_index(ADDR_PTR virt_addr) {
-    return (virt_addr >> LOG_CACHE_LINESIZE) & CACHE_SETS_L3_MASK;
+    //return (virt_addr >> LOG_CACHE_LINESIZE) & CACHE_SETS_L3_MASK;
+    return (virt_addr >> LOG_CACHE_LINESIZE) & (16384-1);
     // return (virt_addr >> LOG_CACHE_LINESIZE) & (2048-1);
 }
 

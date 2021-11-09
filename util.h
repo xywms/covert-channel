@@ -112,6 +112,7 @@ void init_default(struct config *config, int argc, char **argv);
 // Cache
 #define CACHE_LINESIZE      64
 #define LOG_CACHE_LINESIZE  6
+#define slicecnt 8
 
 // L1
 #define LOG_CACHE_SETS_L1   6
@@ -123,7 +124,8 @@ void init_default(struct config *config, int argc, char **argv);
 // LLC
 
 #define LOG_CACHE_SETS_L3   15
-#define CACHE_SETS_L3       32768
+//#define CACHE_SETS_L3       32768
+#define CACHE_SETS_L3       16384
 #define CACHE_SETS_L3_MASK  (CACHE_SETS_L3 - 1)
 #define CACHE_WAYS_L3       20
 

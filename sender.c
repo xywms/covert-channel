@@ -22,7 +22,10 @@ void init_config(struct config *config, int argc, char **argv) {
         for (uint32_t i = 0; i < bsize; i += 64) {
             *(config->buffer + i) = pid;
         }
-
+        //slice数组
+         ADDR_PTR slicearr[slicecnt][1000];
+         int slice_per_sum[slicecnt];
+         int i,j;
         // Construct the addr_set by taking the addresses that have cache set index 0
         uint32_t addr_set_size = 0;
         for (int set_index = 0; set_index < CACHE_SETS_L3; set_index++) {
@@ -32,16 +35,29 @@ void init_config(struct config *config, int argc, char **argv) {
                 ADDR_PTR addr = (ADDR_PTR) (config->buffer + \
                         set_index * CACHE_LINESIZE + stride_idx * L3_way_stride);
                 // both of following function should work...L3 is a more restrict set
-                if (get_cache_slice_set_index(addr) == config->cache_region) {
+                if (get_L3_cache_set_index(addr) == config->cache_region) {
+                //if (get_L3_cache_set_index(addr) == config->cache_region&&slicenum(addr)==0) {
                 // if (get_L3_cache_set_index(addr) == config->cache_region) {
                     append_string_to_linked_list(&config->addr_set, addr);
+                    
                     int sliceid=slicenum(addr);
-                    printf("0x%lx加入list,",addr);
-                    printf("其sliceid=%d",sliceid);
-                    printf("\n");
+                    //printf("0x%lx加入list,",addr);
+                    //printf("其sliceid=%d",sliceid);
+                    //printf("\n");
+                    slicearr[sliceid][slice_per_sum[sliceid]++]=addr;
+                    
                     addr_set_size++;
                 }
             }
+        }
+        for(i=0;i<slicecnt;i++)
+        {
+            printf("slice为%d的地址有%d个:\n",i,slice_per_sum[i]);
+            for(j=0;j<slice_per_sum[i];j++)
+            {
+                printf("0x%lx ",slicearr[i][j]);
+            }
+            printf("\n");
         }
         printf("Found addr_set size of %u\n", addr_set_size);
     }
