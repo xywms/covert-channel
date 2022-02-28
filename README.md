@@ -1,4 +1,5 @@
-来自0x161e-swei/covert-channel-101
+自己做了一些代码调试，增加了计算slice号的函数
+以下是0x161e-swei/covert-channel-101的README.md内容
 # Implementation of a LLC Prime+Probe and a Flush+Reload covert-channels
 
 This is one possible Implementation of LLC Prime+Probe and Flush+Reload
